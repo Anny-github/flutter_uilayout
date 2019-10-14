@@ -25,9 +25,9 @@ class WidgetCatalogView extends StatelessWidget{
   final List<String> listTitles = ['Accessibility：Semantics','Flutter中的动画'];
   _handleTapList(String name,BuildContext context){
     if (Comparable.compare(name, 'Accessibility：Semantics') == 0){
-      Navigator.push(context, new MaterialPageRoute(builder: (context) => WebView(url: 'https://www.jianshu.com/p/8e547f5a12ce',title: name)));
+      Navigator.push(context, new MaterialPageRoute(builder: (context) => WebViewPage(url: 'https://www.jianshu.com/p/8e547f5a12ce',title: name)));
     }else  if (Comparable.compare(name, 'Flutter中的动画') == 0){
-      Navigator.push(context, new MaterialPageRoute(builder: (context) => WebView(url: 'https://www.jianshu.com/p/bc9fbfab70df',title: name)));
+      Navigator.push(context, new MaterialPageRoute(builder: (context) => WebViewPage(url: 'https://www.jianshu.com/p/bc9fbfab70df',title: name)));
     }
     // CupertinoActionSheet(title: Text(name));
   }
