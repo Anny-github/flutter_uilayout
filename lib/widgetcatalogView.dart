@@ -22,9 +22,13 @@ class CatalogItem extends StatelessWidget{
 
 
 class WidgetCatalogView extends StatelessWidget{
-  final List<String> listTitles = ['Accessibility：Semantics','Flutter中的动画'];
+  final List<String> listTitles = ['flutter的button','flutter的webView','Accessibility：Semantics','Flutter中的动画'];
   _handleTapList(String name,BuildContext context){
-    if (Comparable.compare(name, 'Accessibility：Semantics') == 0){
+    if (Comparable.compare(name, 'flutter的button') == 0){
+      Navigator.push(context, new MaterialPageRoute(builder: (context) => WebViewPage(url: 'https://www.jianshu.com/p/2f887cadd527',title: name)));
+    }else if (Comparable.compare(name, 'flutter的webView') == 0){
+      Navigator.push(context, new MaterialPageRoute(builder: (context) => WebViewPage(url: 'https://www.jianshu.com/p/91b4c615b2b4',title: name)));
+    }else if (Comparable.compare(name, 'Accessibility：Semantics') == 0){
       Navigator.push(context, new MaterialPageRoute(builder: (context) => WebViewPage(url: 'https://www.jianshu.com/p/8e547f5a12ce',title: name)));
     }else  if (Comparable.compare(name, 'Flutter中的动画') == 0){
       Navigator.push(context, new MaterialPageRoute(builder: (context) => WebViewPage(url: 'https://www.jianshu.com/p/bc9fbfab70df',title: name)));

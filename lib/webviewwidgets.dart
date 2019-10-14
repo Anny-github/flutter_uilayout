@@ -1,11 +1,8 @@
 
-//flutter_webview_plugin如何使用网址：https://blog.csdn.net/hiyao_557/article/details/89509048
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-import 'package:flutter_uilayout/commondialog.dart';
-import 'package:flutter_uilayout/shoppingcart.dart';
 
 
 typedef ClickCopyButton(BuildContext context);
@@ -16,10 +13,10 @@ class CopyUrlWidget extends StatelessWidget{
   final ClickCopyButton clickCall; 
   Widget build(BuildContext context){
     return new Container(
-      child: new RaisedButton(
-        color: Colors.white.withAlpha(0),
-        textTheme: ButtonTextTheme.normal,
-        child: new Text('复制Url'),
+      child: new FlatButton(      
+        textTheme: ButtonTextTheme.primary,
+        shape: null,
+        child: new Text('复制Url',style: TextStyle(color: Colors.white),),
         onPressed: (){
           this.clickCall(this.context);
         },
@@ -41,37 +38,57 @@ class WebViewPage extends StatefulWidget {
 class _WebViewState extends State<WebViewPage> {
   // WebView flutterWebviewPlugin = WebView();
 
-  // void initState() {
-  //   super.initState();
-    // flutterWebviewPlugin.onStateChanged.listen((WebViewStateChanged state) {
-    //   switch (state.type) {
-    //     case WebViewState.shouldStart:
-    //       //准备加载
-    //       break;
-    //     case WebViewState.startLoad:
-    //       //开始加载
-    //       break;
-    //     case WebViewState.finishLoad:
-    //       //加载完成
-    //       break;
-    //     case WebViewState.abortLoad:
-    //       break;
-    //   }
-    // });
-  // }
+  void initState() {
+    super.initState();
+
+  }
 
   _copyBtnClick(BuildContext context){
     ClipboardData data = ClipboardData(text: widget.url);
     Clipboard.setData(data);
-    Navigator.push(context, new MaterialPageRoute(fullscreenDialog: true, builder: (context) => new ShoppingCart()));
+    showDialog(
+      context:context,
+      builder: (context){
+        return new AlertDialog(
+        title: Text('Alert提示框'),
+        content: Text('复制成功'),
+        actions: <Widget>[
+          RaisedButton(
+            child: Text('好的',style: TextStyle(color: Colors.white),),
+            onPressed: (){
+              Navigator.of(context).pop();  
+            },
+          ),
+        ],
+        );
+      },
+    );
+    // Navigator.push(context, new MaterialPageRoute(fullscreenDialog: true, builder: (context) => new DialogWidget()));
   }
-  //webview并不存在于widget树中，所以你不能在webview中使用如snackbars, dialogs ...这些通知交互widget，更详细一些使用方法可以点击这里；
+  //flutter_webview_plugin插件的webview并不存在于widget树中，所以不能在webview中使用如snackbars, dialogs ...
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: AppBar(title: Text(widget.title),actions: <Widget>[CopyUrlWidget(context: context,clickCall: _copyBtnClick)],),
       body: new WebView(
           initialUrl: widget.url,
           javascriptMode: JavascriptMode.unrestricted,
+           onWebViewCreated: (WebViewController web) {
+              // webview 创建调用，
+            web.loadUrl(widget.url); //此时也可以初始化一个url
+            web.canGoBack().then((res){
+                print(res); // 是否能返回上一级
+             });
+             web.currentUrl().then((url){
+               print(url);// 返回当前url
+             });
+             web.canGoForward().then((res){
+               print(res); //是否能前进
+             });
+            },
+            onPageFinished: (String value) {
+              // webview 页面加载调用
+              print('加载结束'+value);
+            },
           ),  
     );
   }
